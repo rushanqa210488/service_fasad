@@ -1,0 +1,8 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <path class="facade" fill="currentColor" d="M250 50L50 200h50v250h300V200h50L250 50z"/>
+  <path fill="#555" d="M150 300h80v100h-80z"/> <!-- дверь -->
+  <path fill="#87CEEB" d="M300 250h60v60h-60z"/> <!-- окно справа -->
+  <path fill="#87CEEB" d="M140 250h60v60h-60z"/> <!-- окно слева -->
+  <path class="facade" fill="currentColor" d="M180 120l-20 30h40z"/> <!-- декоративный элемент -->
+  <path class="facade" fill="currentColor" d="M320 120l-20 30h40z"/> <!-- декоративный элемент -->
+</svg> 
