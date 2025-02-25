@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block title %}Форма заявки {% endblock title %} 
+    {% block style  %}
+    <link rel="stylesheet" href="{% static "css/form.css" %}">
+    {% endblock style  %}
+
+{% block content %}
+{% if sent %}
+<h1>E-mail successfully sent</h1>
+{% else %}
+<div class="container">
+    <div class="form-wrapper">
+        <h2>Оставить заявку</h2>
+         <form action="{% url "service:contact_data" %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="firstName">Имя</label>
+                <input type="text" id="firstName" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Фамилия</label>
+                <input type="text" id="lastName" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Номер телефона</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <button type="submit">Отправить</button>
+        </form> 
+    </div>
+</div>
+{% endif %}
+{% endblock content %}

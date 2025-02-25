@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Наши работы{% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link rel="stylesheet" href="{% static "css/gallery.css" %}"> 
+{% endblock style %}
+{% block content %}
+<main>
+    <div class="gallery-container">
+        <h1 class="gallery-title">Наши работы</h1>
+       
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                {% for photo in photos %}
+                <div class="swiper-slide">
+                    <img src="{{ photo.photo.url }}" alt="Работа 2">
+                </div>
+                {% endfor %}
+             
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Услуги{% endblock title %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/work.css' %}">
+{% endblock style %}
+
+{% block content %}
+<!--виды работ-->
+<div class="work-container">
+  <h2 class="title">{{service.title}}</h2>
+
+  <p class="intro">
+    Мокрый фасад — это современная система утепления и отделки зданий, которая обеспечивает не только привлекательный внешний вид, но и отличную теплоизоляцию. Качественное выполнение работ гарантирует долговечность и эффективность фасадной системы.
+  </p>
+
+  <div class="service-card">
+    <div class="image-section">
+      <div class="image-placeholder">
+        <img src="{{service.image.url}}" alt="мокрый фасад">
+      </div>
+      <h3 class="card-title">{{service.title}}</h3>
+      <p class="price">{{service.price}}₽/м²</p>
+    </div>
+
+    <div class="content-section">
+      <p>
+        Монтаж мокрого фасада — это комплекс работ по утеплению и декоративной отделке фасадов зданий, требующий профессионального подхода и соблюдения технологии на всех этапах.
+      </p>
+
+      <a href="{% url "service:contact_data" %}" class="request-btn">Оставить заявку</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+
+
