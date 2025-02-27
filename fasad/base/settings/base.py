@@ -27,6 +27,13 @@ print(BASE_DIR)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< HEAD:fasad/base/settings/base.py
+=======
+DEBUG = False
+
+ALLOWED_HOSTS = ['127.0.0.1', '5.101.51.73']
+
+>>>>>>> 1fdb84b (Changed file settings):fasad/base/settings.py
 
 
 # Application definition
@@ -78,6 +85,21 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
+<<<<<<< HEAD:fasad/base/settings/base.py
+=======
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fasad',
+        'USER': 'fasaduser',
+        'PASSWORD': 'hamzafasad',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+>>>>>>> 1fdb84b (Changed file settings):fasad/base/settings.py
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
