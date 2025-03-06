@@ -82,9 +82,6 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-<<<<<<< HEAD:fasad/base/settings/base.py
-=======
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -96,7 +93,6 @@ DATABASES = {
     }
 }
 
->>>>>>> 1fdb84b (Changed file settings):fasad/base/settings.py
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
