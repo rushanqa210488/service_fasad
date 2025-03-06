@@ -27,13 +27,10 @@ print(BASE_DIR)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-<<<<<<< HEAD:fasad/base/settings/base.py
-=======
 DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '5.101.51.73']
 
->>>>>>> 1fdb84b (Changed file settings):fasad/base/settings.py
 
 
 # Application definition
