@@ -4,7 +4,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['5.101.51.73', '127.0.0.1']
+ALLOWED_HOSTS = ['5.101.51.73', '127.0.0.1', 'localhost']
 
 DATABASES = {
     'default': {
@@ -16,3 +16,12 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
