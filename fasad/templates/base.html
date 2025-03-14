@@ -4,173 +4,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}{% endblock %}">
+  <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
   <title>{% block title %}{% endblock title %}</title>
   {% block style %}{% endblock style %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-<!-- Шапка сайта -->
-<header class="header">
-  <div class="header__top">
-    <div class="logo">
-      <img src="{% static 'images/logo-removebg-preview.png' %}" alt="логотип">
-    </div>
-    <div class="contacts">
-      <a href="mailto:hamzasad@mail.ru" class="email">hamzasad@mail.ru</a>
-      <div class="phones">
-        <span>+7(999)184-20-80</span>
-
+  <header class="header">
+    <div class="header__top">
+      <div class="logo">
+        <img src="{% static 'images/logo-removebg-preview.png' %}" alt="логотип">
+      </div>
+      <div class="contacts">
+        <a href="mailto:hamzasad@mail.ru" class="email">hamzasad@mail.ru</a>
+        <div class="phones">
+          <span>+7(999)184-20-80</span>
+        </div>
       </div>
     </div>
-  </div>
-  <nav class="main-nav">
-    <ul class="menu">
-      <!-- Альпинистские работы -->
-      <li class="menu-item">
-        <a href="{% url "service:index" %}">
-          <button class="menu-link">Главная</button>
-        </a>
-      </li>
-      <li class="menu-item">
-        <button class="menu-link" aria-expanded="false">Фасадные работы</button>
-        <ul class="submenu">
-          {% for service  in services_1  %}
-          <a href="{% url 'service:service_detail' service.id %}">
-            <li>{{ service.title }}</li>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <ul class="menu">
+        <li class="menu-item">
+          <a href="{% url 'service:index' %}" class="menu-link">Главная</a>
+        </li>
+        <li class="menu-item" aria-haspopup="true">
+          <button class="menu-link" aria-expanded="false">Фасадные работы</button>
+          <ul class="submenu">
+            {% for service in services_1 %}
+              <li><a href="{% url 'service:service_detail' service.id %}">{{ service.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="menu-item" aria-haspopup="true">
+          <button class="menu-link" aria-expanded="false">Альпинистские работы</button>
+          <ul class="submenu">
+            {% for service in services_2 %}
+              <li><a href="{% url 'service:service_detail' service.id %}">{{ service.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'service:photos' %}" class="menu-link">Наши работы</a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">Контакты</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  {% include "includes/notification.html" %}
+
+  <main>
+    {% block content %}
+    {% endblock content %}
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <a href="index.html">
+            <img src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo" class="img-fluid logo-footer">
           </a>
-          {% endfor %}
-        </ul>
-      </li>
-      <li class="menu-item">
-        <button class="menu-link" aria-expanded="false">Альпинистские работы</button>
-        <ul class="submenu">
-        {% for service  in services_2  %}
-          <a href="{% url 'service:service_detail' service.id %}"><li>{{ service.title }}</li></a>
-          {% endfor %}
-        </ul>
-      </li>
-
-      <!-- Наши работы -->
-      <li class="menu-item">
-        <a href="{% url "service:photos" %}">
-          <button class="menu-link">Наши работы</button>
-        </a>
-      </li>
-      <!-- Контакты -->
-      <li class="menu-item">
-        <a href="#">
-          <button class="menu-link">Контакты</button>
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-</header>
-
-<!-- Основной контент -->
-{% block content %}
-{% endblock  %}
-
-
-<!-- Футер -->
-<footer id="footer">
-  <div class="container">
-    <div class="row">
-      <!-- Logo and About -->
-      <div class="col-md-3">
-        <a href="index.html">
-          <img src="{% static "images/logo-removebg-preview.png" %}" alt="Logo" class="img-fluid logo-footer">
-        </a>
-      </div>
-
-      <!-- Useful Links -->
-      <div class="col-md-3">
-        <div class="useful-link">
-          <h2>Полезные ссылки</h2>
-          <ul class="use-links">
-            <li>
-              <a href="index.html">
-                <img src="{% static 'images/icons/icons8-главная-30.png' %}" alt="Home icon" class="link-icon">
-                Домой
-              </a>
-            </li>
-            <li>
-              <a href="#about-us">
-                <img src="{% static 'images/icons/icons8-информация-30.png' %}" alt="About icon" class="link-icon">
-                О нас
-              </a>
-            </li>
-            <li>
-              <a href="gallery.html">
-                <img src="{% static "images/icons/icons8-картина-30.png" %}" alt="Gallery icon" class="link-icon">
-                Наши работы
-              </a>
-            </li>
-          </ul>
         </div>
-      </div>
-
-      <!-- Social Links -->
-      <div class="col-md-3">
-        <div class="social-links">
-          <h2>Соцсети</h2>
-          <ul class="social-icons">
-            <li>
-              <a href="#">
-                <img src="{% static 'images/icons/icons8-телеграмма-app-30.png' %}" alt="Telegram icon" class="link-icon">
-                Telegram
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="{% static 'images/icons/icons8-instagram-30.png' %}" alt="Instagram icon" class="link-icon">
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="{% static 'images/icons/icons8-whatsapp-30.png' %}" alt="WhatsApp icon" class="link-icon">
-                WhatsApp
-              </a>
-            </li>
-          </ul>
+        <div class="col-md-3">
+          <div class="useful-link">
+            <h2>Полезные ссылки</h2>
+            <ul class="use-links">
+              <li>
+                <a href="index.html">
+                  <img src="{% static 'images/icons/icons8-главная-30.png' %}" alt="Home icon" class="link-icon">
+                  Домой
+                </a>
+              </li>
+              <li>
+                <a href="#about-us">
+                  <img src="{% static 'images/icons/icons8-информация-30.png' %}" alt="About icon" class="link-icon">
+                  О нас
+                </a>
+              </li>
+              <li>
+                <a href="gallery.html">
+                  <img src="{% static 'images/icons/icons8-картина-30.png' %}" alt="Gallery icon" class="link-icon">
+                  Наши работы
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-
-      <!-- Address -->
-      <div class="col-md-3">
-        <div class="address">
-          <h2>Адреса</h2>
-          <ul class="address-links">
-            <li class="address1">
-              <img src="{% static 'images/icons/location_02pzrcac1mbq_32.png' %}" alt="Location icon" class="link-icon">
-             г. Архангельск ул. Луговая д.8
-            </li>
-            <li>
-              <a href="tel:+79991842080">
-                <img src="{% static "images/icons/phone_igzlhwt7yiv9_32.png" %}" alt="Phone icon" class="link-icon">
-                +7(999)184-20-80
-              </a>
-            </li>
-            <li>
-              <a href="mailto:hamzasad@mail.ru">
-                <img src="{% static "images/icons/mail_7ovlf4nwufpl_32.png" %}" alt="Email icon" class="link-icon">
-                hamzasad@mail.ru
-              </a>
-            </li>
-          </ul>
+        <div class="col-md-3">
+          <div class="social-links">
+            <h2>Соцсети</h2>
+            <ul class="social-icons">
+              <li>
+                <a href="#">
+                  <img src="{% static 'images/icons/icons8-телеграмма-app-30.png' %}" alt="Telegram icon" class="link-icon">
+                  Telegram
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <img src="{% static 'images/icons/icons8-instagram-30.png' %}" alt="Instagram icon" class="link-icon">
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <img src="{% static 'images/icons/icons8-whatsapp-30.png' %}" alt="WhatsApp icon" class="link-icon">
+                  WhatsApp
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="address">
+            <h2>Адреса</h2>
+            <ul class="address-links">
+              <li class="address1">
+                <img src="{% static 'images/icons/location_02pzrcac1mbq_32.png' %}" alt="Location icon" class="link-icon">
+                г. Архангельск ул. Луговая д.8
+              </li>
+              <li>
+                <a href="tel:+79991842080">
+                  <img src="{% static 'images/icons/phone_igzlhwt7yiv9_32.png' %}" alt="Phone icon" class="link-icon">
+                  +7(999)184-20-80
+                </a>
+              </li>
+              <li>
+                <a href="mailto:hamzasad@mail.ru">
+                  <img src="{% static 'images/icons/mail_7ovlf4nwufpl_32.png' %}" alt="Email icon" class="link-icon">
+                  hamzasad@mail.ru
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
-<section id="copy-right">
-  <div class="copy-right-sec"><i class="fa-solid fa-copyright"></i>
-     2025  <a href="#"></a>
+  </footer>
 
-  </div>
+  <section id="copy-right">
+    <div class="copy-right-sec">
+      <i class="fa-solid fa-copyright"></i>
+      2025 <a href="#"></a>
+    </div>
+  </section>
 
-</section>
-<script src="{% static "js/script.js" %}"></script>
+  <script rel="script" src="{% static 'js/script.js' %}" defer></script>
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function() {
+      var element = document.getElementById("notification");
+      if (element) {
+        element.remove();
+      }
+    }, 5000);
+  }); 
+ </script> 
+ {% comment %} <script rel="script" src="{% static "js/notification.js" %}"></script> {% endcomment %}
 </body>
 </html>

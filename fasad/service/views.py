@@ -1,3 +1,6 @@
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from .models import Service, Photo
 from .forms import ContactForm
@@ -38,6 +41,8 @@ def send_contact_data(request):
             message = f"Имя-{cd['first_name']}, Фамилия-{cd['last_name']}, Телефон-{cd['phone']}, Почта-{cd['email']}"
             send_mail(subject, message, 'rushan210488@gmail.com', ['rushan.akhmetov@inbox.ru'])
             sent = True
+            messages.success(request, f"{subject}, Ваши данные успешно отправленны!")
+            return HttpResponseRedirect(reverse("service:index"))
     else:
         form = ContactForm()
     return render(request, 'service/send_data.html', {'form': form, 'sent': sent})
