@@ -154,16 +154,6 @@
   </section>
 
   <script rel="script" src="{% static 'js/script.js' %}" defer></script>
- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    setTimeout(function() {
-      var element = document.getElementById("notification");
-      if (element) {
-        element.remove();
-      }
-    }, 5000);
-  }); 
- </script> 
- {% comment %} <script rel="script" src="{% static "js/notification.js" %}"></script> {% endcomment %}
+ <script rel="script" src="{% static "js/notification.js" %}"></script>
 </body>
 </html>

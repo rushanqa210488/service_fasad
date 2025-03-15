@@ -41,7 +41,7 @@ def send_contact_data(request):
             message = f"Имя-{cd['first_name']}, Фамилия-{cd['last_name']}, Телефон-{cd['phone']}, Почта-{cd['email']}"
             send_mail(subject, message, 'rushan210488@gmail.com', ['rushan.akhmetov@inbox.ru'])
             sent = True
-            messages.success(request, f"{subject}, Ваши данные успешно отправленны!")
+            messages.success(request, f"{subject.title()}, Ваши данные успешно отправленны!")
             return HttpResponseRedirect(reverse("service:index"))
     else:
         form = ContactForm()
