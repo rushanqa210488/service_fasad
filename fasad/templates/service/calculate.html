@@ -5,10 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор мокрого фасада</title>
-    <link rel="stylesheet" href="{% static "css/calculate.css" %}">
+    <link rel="stylesheet" href="{% static 'css/calculate.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="calculator-container">
+        <div class="back-button-wrapper">
+            <a href="{% url 'service:index' %}" class="back-button">
+                <img src="{% static 'images/icons/back-arrow.svg' %}" alt="Назад" class="back-icon">
+                <span>На главную</span>
+            </a>
+        </div>
+
         <h1>Калькулятор мокрого фасада</h1>
         
         <div class="calculator-grid">
@@ -52,7 +60,7 @@
                       <option value="stone">Каменная вата</option>
                       <option value="basalt">Базальтовая вата</option>
                       <option value="extruded">Экструдированный пенопласт</option>
-                  </select>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -67,8 +75,32 @@
                 <div class="color-section">
                     <label>Цвет фасада:</label>
                     <div class="color-picker-container">
-                        <input type="color" id="colorPicker" value="#835f47">
-                        <span class="selected-color-value">#835f47</span>
+                        <div class="color-buttons">
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#FFDAB9" style="background-color: #FFDAB9"></button>
+                                <div class="color-name">Персик</div>
+                            </div>
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#FFF44F" style="background-color: #FFF44F"></button>
+                                <div class="color-name">Жёлтый</div>
+                            </div>
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#98FF98" style="background-color: #98FF98"></button>
+                                <div class="color-name">Фисташковый</div>
+                            </div>
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#FFFFFF" style="background-color: #FFFFFF"></button>
+                                <div class="color-name">Белый</div>
+                            </div>
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#40E0D0" style="background-color: #40E0D0"></button>
+                                <div class="color-name">Бирюзовый</div>
+                            </div>
+                            <div class="color-button-wrapper">
+                                <button type="button" class="color-button" data-color="#FFFFF0" style="background-color: #FFFFF0"></button>
+                                <div class="color-name">Слоновая кость</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -88,291 +120,251 @@
             <p>Стоимость утепления: <span id="insulation-cost">0</span> руб.</p>
             <p>Стоимость штукатурки: <span id="plaster-cost">0</span> руб.</p>
         </div>
-            <button id="download-btn" class="secondary-button">Скачать расчёт</button>
-            <button id="email-btn" class="secondary-button">Отправить на почту</button>
+        <div class="action-buttons">
+            <button id="download-btn" class="action-button">
+                <i class="download-icon"></i>
+                <span>Скачать расчёт</span>
+            </button>
+            <button id="email-btn" class="action-button">
+                <i class="email-icon"></i>
+                <span>Отправить на почту</span>
+            </button>
         </div>
     </div>
     <script>
-      
-document.addEventListener('DOMContentLoaded', function() {
-  // Данные для расчетов
-  const plasterPrices = {
-    'ceresit': { price: 1200, consumption: 6 },
-    'knauf': { price: 1000, consumption: 5.5 },
-    'weber': { price: 1400, consumption: 5.8 },
-    'vetonit': { price: 1300, consumption: 5.7 },
-    'bergauf': { price: 1100, consumption: 5.6 },
-    'linimax': { price: 950, consumption: 5.4 },
-    'other': { price: 1000, consumption: 5.5 }
-  };
+        document.addEventListener('DOMContentLoaded', function() {
+            // Настройка canvas для изображения дома
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            let baseImageData;
 
-  const insulationPrices = {
-    'mineral': {
-      30: 350,
-      50: 450,
-      100: 800
-    },
-    'penoplast': {
-      30: 250,
-      50: 300,
-      100: 550
-    },
-    'stone': {
-      30: 400,
-      50: 500,
-      100: 900
-    },
-    'basalt': {
-      30: 450,
-      50: 550,
-      100: 950
-    },
-    'extruded': {
-      30: 500,
-      50: 600,
-      100: 1000
-    }
-  };
+            // Загрузка изображения
+            const houseIcon = document.getElementById('house-icon');
+            
+            if (houseIcon) {
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    baseImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    houseIcon.parentNode.replaceChild(canvas, houseIcon);
+                };
+                img.src = houseIcon.src;
+            }
 
-  // Предустановленные цвета с их HEX значениями
-  const presetColors = {
-    'Персик': '#FFDAB9',
-    'Жёлтый': '#FFF44F',
-    'Фисташковый': '#98FF98',
-    'Белый': '#FFFFFF',
-    'Бирюзовый': '#40E0D0',
-    'Слоновая кость': '#FFFFF0'
-  };
+            // Обработчики для кнопок цветов
+            document.querySelectorAll('.color-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    if (color && baseImageData) {
+                        changeHouseColor(color);
+                        
+                        // Обновляем выделение кнопок
+                        document.querySelectorAll('.color-button').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                    }
+                });
+            });
 
-  // Обновляем select с типами утеплителя
-  const insulationTypeSelect = document.getElementById('insulation-type');
-  if (insulationTypeSelect) {
-    insulationTypeSelect.innerHTML = `
-      <option value="none">Без утепления</option>
-      <option value="mineral">Минеральная вата</option>
-      <option value="penoplast">Пенопласт</option>
-      <option value="stone">Каменная вата</option>
-      <option value="basalt">Базальтовая вата</option>
-      <option value="extruded">Экструдированный пенопласт</option>
-    `;
-  }
+            // Калькулятор
+            document.getElementById('calculate-btn').addEventListener('click', function() {
+                const area = parseFloat(document.getElementById('area').value);
+                const plasterType = document.getElementById('plaster-type').value;
+                const insulationType = document.getElementById('insulation-type').value;
+                const insulationThickness = parseInt(document.getElementById('insulation-thickness').value);
+                const isInsulationEnabled = document.getElementById('insulation').checked;
 
-  // Обновляем select с толщиной утеплителя
-  const insulationThicknessSelect = document.getElementById('insulation-thickness');
-  if (insulationThicknessSelect) {
-    insulationThicknessSelect.innerHTML = `
-      <option value="30">30 мм</option>
-      <option value="50">50 мм</option>
-      <option value="100">100 мм</option>
-    `;
-  }
+                if (!area || area <= 0) {
+                    alert('Пожалуйста, введите корректную площадь');
+                    return;
+                }
 
-  // Обновляем select с марками штукатурки
-  const plasterTypeSelect = document.getElementById('plaster-type');
-  if (plasterTypeSelect) {
-    plasterTypeSelect.innerHTML = `
-      <option value="ceresit">Ceresit</option>
-      <option value="knauf">Knauf</option>
-      <option value="weber">Weber</option>
-      <option value="vetonit">Vetonit</option>
-      <option value="bergauf">Bergauf</option>
-      <option value="linimax">Linimax</option>
-      <option value="other">Другие</option>
-    `;
-  }
+                const plasterPrices = {
+                    'ceresit': { price: 1200, consumption: 6 },
+                    'knauf': { price: 1000, consumption: 5.5 },
+                    'weber': { price: 1400, consumption: 5.8 }
+                };
 
-  // Создаём контейнер для кнопок цветов
-  const colorContainer = document.createElement('div');
-  colorContainer.className = 'color-buttons';
-  colorContainer.style.display = 'flex';
-  colorContainer.style.gap = '10px';
-  colorContainer.style.flexWrap = 'wrap';
-  colorContainer.style.marginBottom = '20px';
+                const insulationPrices = {
+                    'mineral': { 30: 350, 50: 450, 100: 800 },
+                    'penoplast': { 30: 250, 50: 300, 100: 550 },
+                    'stone': { 30: 400, 50: 500, 100: 900 },
+                    'basalt': { 30: 450, 50: 550, 100: 950 },
+                    'extruded': { 30: 500, 50: 600, 100: 1000 }
+                };
 
-  // Создаём кнопки для каждого цвета
-  Object.entries(presetColors).forEach(([name, hex]) => {
-    const button = document.createElement('button');
-    button.className = 'color-button';
-    button.style.padding = '10px 20px';
-    button.style.border = '2px solid #ddd';
-    button.style.borderRadius = '5px';
-    button.style.backgroundColor = hex;
-    button.style.cursor = 'pointer';
-    button.style.display = 'flex';
-    button.style.flexDirection = 'column';
-    button.style.alignItems = 'center';
-    button.style.minWidth = '120px';
+                // Расчет стоимости штукатурки
+                const plasterInfo = plasterPrices[plasterType];
+                const plasterCost = area * plasterInfo.price;
+                const plasterAmount = area * plasterInfo.consumption;
 
-    const colorName = document.createElement('span');
-    colorName.textContent = name;
-    colorName.style.marginBottom = '5px';
-    colorName.style.color = '#333';
+                // Расчет стоимости утепления
+                let insulationCost = 0;
+                if (isInsulationEnabled && insulationType !== 'none') {
+                    if (insulationPrices[insulationType] && insulationPrices[insulationType][insulationThickness]) {
+                        insulationCost = area * insulationPrices[insulationType][insulationThickness];
+                    }
+                }
 
-    button.appendChild(colorName);
-    button.addEventListener('click', () => selectColor(hex));
-    colorContainer.appendChild(button);
-  });
+                // Общая стоимость
+                const totalCost = plasterCost + insulationCost;
 
-  // Добавляем контейнер с кнопками на страницу
-  const colorPickerContainer = document.querySelector('.color-picker-container');
-  if (colorPickerContainer) {
-    colorPickerContainer.innerHTML = '';
-    colorPickerContainer.appendChild(colorContainer);
-  }
+                // Обновляем результаты
+                document.getElementById('total-cost').textContent = totalCost.toLocaleString();
+                document.getElementById('materials').textContent = plasterAmount.toLocaleString();
+                document.getElementById('insulation-cost').textContent = insulationCost.toLocaleString();
+                document.getElementById('plaster-cost').textContent = plasterCost.toLocaleString();
+                
+                // Показываем результаты
+                document.getElementById('result').classList.remove('hidden');
+            });
 
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const imagePath = "{% static 'images/2025-01-20_10.31.10-removebg-preview (1).png' %}";
-  const originalImage = new Image();
-  originalImage.src = imagePath;
-  let imageData;
+            function changeHouseColor(hexColor) {
+                // Создаем копию базового изображения
+                const imageData = new ImageData(
+                    new Uint8ClampedArray(baseImageData.data),
+                    baseImageData.width,
+                    baseImageData.height
+                );
+                
+                const newColor = hexToRgb(hexColor);
+                
+                if (!newColor) return;
 
-  originalImage.onload = function() {
-    canvas.width = originalImage.width;
-    canvas.height = originalImage.height;
-    ctx.drawImage(originalImage, 0, 0);
-    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                let facadePixelsCount = 0;
+                const data = imageData.data;
+                
+                // Сначала находим средний цвет фасада для определения яркости
+                let totalR = 0, totalG = 0, totalB = 0, count = 0;
+                for (let i = 0; i < data.length; i += 4) {
+                    if (isFacadePixel(data[i], data[i + 1], data[i + 2], data[i + 3])) {
+                        totalR += data[i];
+                        totalG += data[i + 1];
+                        totalB += data[i + 2];
+                        count++;
+                    }
+                }
+                
+                // Вычисляем среднюю яркость фасада
+                const avgBrightness = count > 0 ? (totalR + totalG + totalB) / (count * 3) / 255 : 1;
 
-    const housePreview = document.querySelector('.house-preview');
-    housePreview.innerHTML = '';
-    housePreview.appendChild(canvas);
-  };
+                // Применяем новый цвет с учетом средней яркости
+                for (let i = 0; i < data.length; i += 4) {
+                    if (isFacadePixel(data[i], data[i + 1], data[i + 2], data[i + 3])) {
+                        facadePixelsCount++;
+                        
+                        // Вычисляем относительную яркость текущего пикселя
+                        const currentBrightness = (data[i] + data[i + 1] + data[i + 2]) / (3 * 255);
+                        const relativeBrightness = currentBrightness / avgBrightness;
+                        
+                        // Применяем новый цвет с сохранением относительной яркости
+                        data[i] = Math.min(255, Math.round(newColor.r * relativeBrightness));
+                        data[i + 1] = Math.min(255, Math.round(newColor.g * relativeBrightness));
+                        data[i + 2] = Math.min(255, Math.round(newColor.b * relativeBrightness));
+                    }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+            }
 
-  function isInColorRange(r, g, b) {
-    const baseR = 131;
-    const baseG = 95;
-    const baseB = 71;
-    const tolerance = 40;
+            function isFacadePixel(r, g, b, a) {
+                if (a !== 255) return false;
 
-    const isBaseColor =
-      Math.abs(r - baseR) <= tolerance &&
-      Math.abs(g - baseG) <= tolerance &&
-      Math.abs(b - baseB) <= tolerance;
+                // Определяем коричневый цвет фасада более точно
+                const baseColors = [
+                    { r: 131, g: 95, b: 71 },  // основной коричневый
+                    { r: 140, g: 100, b: 75 }, // светлый коричневый
+                    { r: 120, g: 85, b: 65 }   // темный коричневый
+                ];
 
-    const colorRatio =
-      Math.abs((r/g) - (baseR/baseG)) < 0.2 &&
-      Math.abs((g/b) - (baseG/baseB)) < 0.2;
+                // Уменьшаем допустимое отклонение
+                const tolerance = 30;
 
-    const brightness = (r + g + b) / 3;
-    const isValidBrightness = brightness > 40 && brightness < 200;
+                // Проверяем на соответствие любому из базовых цветов
+                return baseColors.some(baseColor => {
+                    const dr = Math.abs(r - baseColor.r);
+                    const dg = Math.abs(g - baseColor.g);
+                    const db = Math.abs(b - baseColor.b);
+                    
+                    // Проверяем, что это коричневый (r > g > b)
+                    const isCorrectOrder = r > g && g > b;
+                    
+                    // Проверяем отклонение от базового цвета
+                    const isWithinTolerance = dr <= tolerance && dg <= tolerance && db <= tolerance;
+                    
+                    // Проверяем соотношение компонентов
+                    const isCorrectRatio = (r/g > 1.2) && (g/b > 1.2);
+                    
+                    return isCorrectOrder && isWithinTolerance && isCorrectRatio;
+                });
+            }
 
-    const isBrownish = r > g && g > b;
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
 
-    return isBaseColor && colorRatio && isValidBrightness && isBrownish;
-  }
+            // Обработчики кнопок экспорта
+            document.getElementById('download-btn').addEventListener('click', function() {
+                const results = {
+                    area: document.getElementById('area').value,
+                    plasterType: document.getElementById('plaster-type').value,
+                    insulationType: document.getElementById('insulation-type').value,
+                    insulationThickness: document.getElementById('insulation-thickness').value,
+                    totalCost: document.getElementById('total-cost').textContent,
+                    materialsNeeded: document.getElementById('materials').textContent,
+                    insulationCost: document.getElementById('insulation-cost').textContent,
+                    plasterCost: document.getElementById('plaster-cost').textContent
+                };
 
-  function selectColor(color) {
-    const selectedColor = hexToRgb(color);
+                fetch('{% url "service:generate_pdf" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(results)
+                })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'calculation-results.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Ошибка при создании PDF:', error);
+                    alert('Произошла ошибка при создании PDF. Пожалуйста, попробуйте снова.');
+                });
+            });
 
-    const newImageData = new ImageData(
-      new Uint8ClampedArray(imageData.data),
-      imageData.width,
-      imageData.height
-    );
+            document.getElementById('email-btn').addEventListener('click', function() {
+                const results = {
+                    area: document.getElementById('area').value,
+                    plasterType: document.getElementById('plaster-type').value,
+                    insulationType: document.getElementById('insulation-type').value,
+                    insulationThickness: document.getElementById('insulation-thickness').value,
+                    totalCost: document.getElementById('total-cost').textContent,
+                    materialsNeeded: document.getElementById('materials').textContent,
+                    insulationCost: document.getElementById('insulation-cost').textContent,
+                    plasterCost: document.getElementById('plaster-cost').textContent
+                };
 
-    const baseBrightness = (131 + 95 + 71) / 3;
-
-    for (let i = 0; i < newImageData.data.length; i += 4) {
-      const r = newImageData.data[i];
-      const g = newImageData.data[i + 1];
-      const b = newImageData.data[i + 2];
-      const a = newImageData.data[i + 3];
-
-      if (isInColorRange(r, g, b) && a === 255) {
-        const currentBrightness = (r + g + b) / 3;
-        const shadingFactor = currentBrightness / baseBrightness;
-
-        newImageData.data[i] = Math.min(255, Math.round(selectedColor.r * shadingFactor));
-        newImageData.data[i + 1] = Math.min(255, Math.round(selectedColor.g * shadingFactor));
-        newImageData.data[i + 2] = Math.min(255, Math.round(selectedColor.b * shadingFactor));
-      }
-    }
-
-    ctx.putImageData(newImageData, 0, 0);
-  }
-
-  function hexToRgb(hex) {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
-  }
-
-  // Калькулятор
-  document.getElementById('calculate-btn').addEventListener('click', calculate);
-
-  function calculate() {
-    const area = parseFloat(document.getElementById('area').value);
-    const plasterType = document.getElementById('plaster-type').value;
-    const insulationType = document.getElementById('insulation-type').value;
-    const insulationThickness = parseInt(document.getElementById('insulation-thickness').value);
-
-    if (!area || area <= 0) {
-      alert('Пожалуйста, введите корректную площадь');
-      return;
-    }
-
-    const plasterInfo = plasterPrices[plasterType];
-    const plasterCost = area * plasterInfo.price;
-    const plasterAmount = area * plasterInfo.consumption;
-
-    let insulationCost = 0;
-    if (insulationType !== 'none') {
-      insulationCost = area * insulationPrices[insulationType][insulationThickness];
-    }
-
-    const totalCost = plasterCost + insulationCost;
-
-    document.getElementById('total-cost').textContent = totalCost.toLocaleString();
-    document.getElementById('materials').textContent = plasterAmount.toLocaleString();
-    document.getElementById('insulation-cost').textContent = insulationCost.toLocaleString();
-    document.getElementById('plaster-cost').textContent = plasterCost.toLocaleString();
-    document.getElementById('result').classList.remove('hidden');
-  }
-
-  // Обработчики кнопок экспорта
-  document.getElementById('download-btn').addEventListener('click', () => {
-    const results = {
-      area: document.getElementById('area').value,
-      plasterType: document.getElementById('plaster-type').value,
-      insulationType: document.getElementById('insulation-type').value,
-      insulationThickness: document.getElementById('insulation-thickness').value,
-      totalCost: document.getElementById('total-cost').textContent,
-      materialsNeeded: document.getElementById('materials').textContent,
-      insulationCost: document.getElementById('insulation-cost').textContent,
-      plasterCost: document.getElementById('plaster-cost').textContent
-    };
-
-    const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'calculation-results.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-
-  document.getElementById('email-btn').addEventListener('click', () => {
-    const results = {
-      area: document.getElementById('area').value,
-      plasterType: document.getElementById('plaster-type').value,
-      insulationType: document.getElementById('insulation-type').value,
-      insulationThickness: document.getElementById('insulation-thickness').value,
-      totalCost: document.getElementById('total-cost').textContent,
-      materialsNeeded: document.getElementById('materials').textContent,
-      insulationCost: document.getElementById('insulation-cost').textContent,
-      plasterCost: document.getElementById('plaster-cost').textContent
-    };
-
-    const mailToLink = `mailto:?subject=Расчет фасадных работ&body=${encodeURIComponent(JSON.stringify(results, null, 2))}`;
-    window.location.href = mailToLink;
-  });
-});
+                const mailToLink = `mailto:?subject=Расчет фасадных работ&body=${encodeURIComponent(JSON.stringify(results, null, 2))}`;
+                window.location.href = mailToLink;
+            });
+        });
     </script>
-    {% comment %} <script src="{% static "js/calculate.js" %}"></script> {% endcomment %}
 </body>
 </html>

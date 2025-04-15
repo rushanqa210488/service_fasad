@@ -7,8 +7,10 @@
   <meta name="description" content="{% block meta_description %}{% endblock %}">
   <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
   <title>{% block title %}{% endblock title %}</title>
-  {% block style %}{% endblock style %}
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {% block extra_css %}{% endblock extra_css %}
 </head>
 <body>
   <header class="header">
@@ -62,14 +64,14 @@
   </main>
 
   <footer id="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
+    <div class="footer-container">
+      <div class="footer-row">
+        <div class="footer-col">
           <a href="index.html">
-            <img src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo" class="img-fluid logo-footer">
+            <img src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo" class="logo-footer">
           </a>
         </div>
-        <div class="col-md-3">
+        <div class="footer-col">
           <div class="useful-link">
             <h2>Полезные ссылки</h2>
             <ul class="use-links">
@@ -94,7 +96,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="footer-col">
           <div class="social-links">
             <h2>Соцсети</h2>
             <ul class="social-icons">
@@ -119,18 +121,20 @@
             </ul>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="footer-col">
           <div class="address">
             <h2>Адреса</h2>
             <ul class="address-links">
               <li class="address1">
-                <img src="{% static 'images/icons/location_02pzrcac1mbq_32.png' %}" alt="Location icon" class="link-icon">
-                г. Архангельск ул. Луговая д.8
+                <a href="https://yandex.ru/maps/?text=г. Астрахань, ул 2-я Зеленгинская дом 3 кв 2, Офис 76" target="_blank">
+                  <img src="{% static 'images/icons/location_02pzrcac1mbq_32.png' %}" alt="Location icon" class="link-icon">
+                  г. Астрахань, ул 2-я Зеленгинская дом 3 кв 2, Офис 76
+                </a>
               </li>
               <li>
-                <a href="tel:+79991842080">
+                <a href="tel:+79270703008">
                   <img src="{% static 'images/icons/phone_igzlhwt7yiv9_32.png' %}" alt="Phone icon" class="link-icon">
-                  +7(999)184-20-80
+                  +7(927)070-30-08
                 </a>
               </li>
               <li>
@@ -154,6 +158,29 @@
   </section>
 
   <script rel="script" src="{% static 'js/script.js' %}" defer></script>
- <script rel="script" src="{% static "js/notification.js" %}"></script>
+  <script rel="script" src="{% static "js/notification.js" %}"></script>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_API_ключ&lang=ru_RU" type="text/javascript"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Проверяем, есть ли элемент карты на странице
+      const mapElement = document.getElementById('map');
+      if (mapElement) {
+        ymaps.ready(function () {
+          var myMap = new ymaps.Map('map', {
+            center: [46.351925, 48.071842], // Новые координаты
+            zoom: 17
+          });
+
+          var myPlacemark = new ymaps.Placemark([46.351925, 48.071842], {
+            hintContent: 'Наш офис',
+            balloonContent: 'г. Астрахань, ул 2-я Зеленгинская дом 3 кв2, Офис 76'
+          });
+
+          myMap.geoObjects.add(myPlacemark);
+          myMap.behaviors.disable('scrollZoom');
+        });
+      }
+    });
+  </script>
 </body>
 </html>

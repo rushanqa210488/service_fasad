@@ -4,8 +4,7 @@ SECRET_KEY='django-insecure-&rxgk9d@s0&^q%(^pnethuz4=hj=^8jx_)ga34=@#m_y47=5au'
 
 DEBUG = True
 
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '*']
 
 DATABASES = {
     'default': {
@@ -13,9 +12,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
-    ]
+]
 
 
 

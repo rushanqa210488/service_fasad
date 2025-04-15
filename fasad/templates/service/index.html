@@ -3,7 +3,6 @@
 
 {% block title %}Главная{% endblock title %}
 {% block content %}
-<!-- Основной контент -->
 <main class="main">
   <section class="services">
     <div class="servis-container">
@@ -12,7 +11,6 @@
         <span class="centered-line">мокрого фасада</span>
       </h1>
     </div>
-
 
     <div class="wrapper">
       <div class="link_wrapper">
@@ -23,17 +21,214 @@
           </svg>
         </div>
       </div>
-
     </div>
   </section>
 
-  <section class="about" id="about-us">
-    <div class="about-images">
-     
+  <section class="about-us">
+    <div class="about-us-container">
+      <div class="about-us-content">
+        <div class="company-image">
+          <img src="{% static 'images/DALL·E 2025-01-22 11.42.15 - A realistic house with a simple, solid-colored facade and a slightly different solid color for the roof. The house has no shadows, ensuring the facade.png' %}" alt="Наша компания">
+        </div>
+        <div class="company-info">
+          <h2 class="about-us-title">О НАШЕЙ КОМПАНИИ</h2>
+          <div class="company-description">
+            <p>Мы специализируемся на профессиональной отделке фасадов зданий с использованием технологии "мокрого фасада". За более чем 10 лет работы наша компания успешно реализовала множество проектов различной сложности - от частных домов до крупных коммерческих объектов.</p>
+            <p>География выполненных работ постоянно расширяется, и в данный момент мы успешно работаем не только в Архангельске, но и в других городах России. Наша команда состоит из опытных специалистов, которые постоянно совершенствуют свои навыки и применяют современные технологии в работе.</p>
+          </div>
+          <div class="contact-info">
+            <div class="contact-label">СВЯЖИТЕСЬ С НАМИ:</div>
+            <div class="phone-numbers">
+              <a href="tel:+79991842080">+7 (999) 184-20-80</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <section class="advantages">
+    <div class="advantages-container">
+      <h2 class="advantages-title">ПРЕИМУЩЕСТВА ТЕХНОЛОГИИ<br>МОКРОГО ФАСАДА</h2>
+      <h3 class="advantages-subtitle">И НАШЕЙ КОМПАНИИ</h3>
+
+      <div class="advantages-grid">
+        <!-- Первый ряд -->
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/thermal.svg' %}" alt="Теплоизоляция">
+          </div>
+          <h4>ТЕПЛОИЗОЛЯЦИЯ</h4>
+          <p>Высокая теплоизоляция благодаря многослойной системе утепления</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/energy.svg' %}" alt="Энергоэффективность">
+          </div>
+          <h4>ЭНЕРГОЭФФЕКТИВНОСТЬ</h4>
+          <p>Снижение затрат на отопление до 40% за счет качественной теплоизоляции</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/price.svg' %}" alt="Цена">
+          </div>
+          <h4>ДОСТУПНАЯ ЦЕНА</h4>
+          <p>Оптимальное соотношение цены и качества на рынке фасадных работ</p>
+        </div>
+
+        <!-- Второй ряд -->
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/protection.svg' %}" alt="Защита">
+          </div>
+          <h4>ЗАЩИТА ОТ ВЛАГИ</h4>
+          <p>Надежная защита от атмосферных осадков и влаги</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/eco.svg' %}" alt="Экологичность">
+          </div>
+          <h4>ЭКОЛОГИЧНОСТЬ</h4>
+          <p>Использование экологически чистых материалов, безопасных для здоровья</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/repair.svg' %}" alt="Ремонтопригодность">
+          </div>
+          <h4>РЕМОНТОПРИГОДНОСТЬ</h4>
+          <p>Легкость в обслуживании и ремонте при необходимости</p>
+        </div>
+
+        <!-- Третий ряд -->
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/design.svg' %}" alt="Дизайн">
+          </div>
+          <h4>ЭСТЕТИЧНОСТЬ</h4>
+          <p>Широкие возможности для создания различных архитектурных решений</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/experience.svg' %}" alt="Опыт">
+          </div>
+          <h4>БОЛЬШОЙ ОПЫТ</h4>
+          <p>Более 10 лет опыта в монтаже мокрых фасадов</p>
+        </div>
+
+        <div class="advantage-item">
+          <div class="advantage-icon">
+            <img src="{% static 'images/icons/quality.svg' %}" alt="Качество">
+          </div>
+          <h4>КАЧЕСТВО РАБОТ</h4>
+          <p>Гарантия качества на все выполненные работы</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contacts-section">
+    <div class="contacts-container">
+      <div class="contacts-wrapper">
+        <div class="contacts-info">
+          <h2 class="section-title">КОНТАКТЫ</h2>
+          <div class="contact-details">
+            <div class="contact-item">
+              <h4>Адрес:</h4>
+              <p>г. Астрахань, ул 2-я Зеленгинская дом 3 кв 2, Офис 76</p>
+            </div>
+            <div class="contact-item">
+              <h4>Контакты:</h4>
+              <p>тел: +7 (927) 070-30-08</p>
+              <p>email: hamzasad@mail.ru</p>
+            </div>
+            <div class="working-hours">
+              <h4>Режим работы:</h4>
+              <p>08:00 до 20:00 (по Московскому времени) понедельник-суббота.</p>
+              <p>Выходной: Воскресенье.</p>
+            </div>
+          </div>
+          <div class="map-container">
+            <div id="map" style="width: 100%; height: 400px; margin-top: 20px; border-radius: 10px;"></div>
+          </div>
+        </div>
+
+        <div class="contact-form">
+          <h3>ОСТАВИТЬ ЗАЯВКУ</h3>
+          <p class="subtitle">И МЫ СВЯЖЕМСЯ С ВАМИ В БЛИЖАЙШЕЕ ВРЕМЯ</p>
+          <form action="{% url 'service:contact_data' %}" method="post">
+            {% csrf_token %}
+            <div class="form-fields">
+              <div class="form-group">
+                <label for="firstName">Ф.И.О</label>
+                <input type="text" id="firstName" name="first_name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input type="email" id="email" name="email">
+              </div>
+              <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+              <div class="form-group">
+                <label for="city">Из какого Вы города</label>
+                <input type="text" id="city" name="city" required>
+              </div>
+            </div>
+            <button type="submit" class="submit-button">Отправить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
+
+<!-- Модальное окно успешной отправки -->
+<div class="modal-success" id="successModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+      </svg>
+    </div>
+    <h4>Спасибо!</h4>
+    <p>Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.</p>
+  </div>
+</div>
+
+<script>
+function showSuccessModal() {
+  document.getElementById('successModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('show');
+}
+
+// Закрытие модального окна при клике вне его
+document.getElementById('successModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+
+// Предотвращение закрытия при клике на содержимое модального окна
+document.querySelector('.modal-content').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+
+document.querySelector('form').addEventListener('submit', function(e) {
+  // Здесь оставляем существующую логику отправки формы
+  // После успешной отправки вызываем:
+  // showSuccessModal();
+});
+</script>
 {% endblock content %}
 
 

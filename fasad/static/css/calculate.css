@@ -2,67 +2,88 @@
     --primary-color: #4CAF50;
     --secondary-color: #45a049;
     --border-radius: 8px;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
+    --button-green: #66ff66;
+    --button-blue: #06b6e2;
+}
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #f5f5f5;
-  }
-  
-  .calculator-container {
+}
+
+.calculator-container {
+    width: 95%;
     max-width: 1000px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
+    padding: clamp(10px, 2vw, 20px);
     border-radius: var(--border-radius);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  h1 {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+h1 {
     text-align: center;
     color: #333;
-  }
-  
-  .calculator-grid {
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.calculator-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+    gap: clamp(10px, 2vw, 20px);
     margin-bottom: 20px;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 20px;
-  }
-  
-  label {
+    transition: all 0.3s ease;
+}
+
+label {
     display: block;
     margin-bottom: 5px;
-    color: #666;
-  }
-  
-  input[type="number"],
-  select {
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+input[type="number"],
+select,
+button {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: var(--border-radius);
-  }
-  
-  .toggle-switch {
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+input[type="number"]:focus,
+select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.toggle-switch {
     position: relative;
     width: 60px;
     height: 34px;
-  }
-  
-  .toggle-switch input {
+}
+
+.toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .toggle-switch label {
+}
+
+.toggle-switch label {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -72,9 +93,9 @@
     background-color: #ccc;
     border-radius: 34px;
     transition: .4s;
-  }
-  
-  .toggle-switch label:before {
+}
+
+.toggle-switch label:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -84,133 +105,445 @@
     background-color: white;
     border-radius: 50%;
     transition: .4s;
-  }
-  
-  .toggle-switch input:checked + label {
+}
+
+.toggle-switch input:checked + label {
     background-color: var(--primary-color);
-  }
-  
-  .toggle-switch input:checked + label:before {
+}
+
+.toggle-switch input:checked + label:before {
     transform: translateX(26px);
-  }
-  
-  .color-picker-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-top: 10px;
-  }
-  
-  input[type="color"] {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      width: 80px;
-      height: 80px;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-  }
-  
-  input[type="color"]::-webkit-color-swatch-wrapper {
-      padding: 0;
-  }
-  
-  input[type="color"]::-webkit-color-swatch {
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-  }
-  
-  input[type="color"]:hover::-webkit-color-swatch {
-      border-color: var(--primary-color);
-      transform: scale(1.05);
-  }
-  
-  .selected-color-value {
-      font-family: monospace;
-      font-size: 16px;
-      color: #666;
-  }
-  
-  /* Стили для превью дома */
-  .house-preview {
+}
+
+/* Кнопка "На главную" с анимацией */
+.back-button-wrapper {
+    margin-bottom: 20px;
+}
+
+.back-button {
+    outline: none;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--primary-color);
+    color: white;
+    width: auto;
+    z-index: 1;
+    text-decoration: none;
+}
+
+.back-button .back-icon {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    z-index: 2;
+    filter: brightness(0) invert(1);
+}
+
+.back-button span {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.back-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--button-blue);
+    transition: left 0.3s ease;
+    z-index: 1;
+}
+
+.back-button:hover::before {
+    left: 0;
+}
+
+/* Стили для выбора цвета */
+.color-section {
+    margin-bottom: 20px;
+}
+
+.color-picker-container {
+    margin-top: 10px;
+}
+
+.color-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.color-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.color-button {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.color-name {
+    font-size: 12px;
+    color: #333;
+    margin-top: 4px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Общие стили для всех кнопок */
+.back-button,
+.calculate-button,
+.action-button {
+    transition: all 0.3s ease;
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-button:hover,
+.calculate-button:hover,
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.back-button:active,
+.calculate-button:active,
+.action-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Стили для превью дома */
+.house-preview {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-  }
-  
-  #house-icon {
-    width: 400px;
-    height: 400px;
-    transition: fill 0.3s ease;
-  }
-  
-  .calculate-button {
-    display: block;
+    padding: clamp(10px, 2vw, 20px);
     width: 100%;
-    padding: 15px;
+}
+
+#house-icon,
+canvas {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+}
+
+.calculate-button {
+    display: block;
+    width: clamp(200px, 50%, 300px);
+    margin: 0 auto;
+    padding: 12px 30px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: var(--border-radius);
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .calculate-button:hover {
-    background-color: var(--secondary-color);
-  }
-  
-  .calculate-button:active {
-    transform: scale(0.98);
-  }
-  
-  .result-section {
-    margin-top: 20px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#result {
+    margin-top: 30px;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: var(--border-radius);
-  }
-  
-  .result-section.hidden {
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+
+.hidden {
     display: none;
-  }
-  
-  .secondary-button {
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: white;
-    border: 1px solid var(--primary-color);
+}
+
+#result p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+#result span {
+    font-weight: 600;
     color: var(--primary-color);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .secondary-button:hover {
+}
+
+/* Кнопки действий */
+.action-buttons {
+    display: flex;
+    gap: clamp(10px, 2vw, 20px);
+    justify-content: center;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+}
+
+.action-button {
+    width: clamp(200px, 50%, 300px);
+    padding: clamp(10px, 1.5vw, 12px) clamp(15px, 2vw, 30px);
     background-color: var(--primary-color);
     color: white;
-  }
-  
-  #imageSource {
-    transition: filter 0.3s ease;
-  }
-  
-  .house-preview canvas {
-    width: 100%;
-    max-width: 700px;
-    height: auto;
-  }
-  
-  @media (max-width: 768px) {
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: clamp(13px, 1.5vw, 16px);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin: 0 auto;
+}
+
+.action-button i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.email-icon {
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'%3E%3C/path%3E%3Cpolyline points='22,6 12,13 2,6'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Скрываем стандартный color picker */
+input[type="color"], 
+.selected-color-value {
+    display: none !important;
+}
+
+/* Медиа-запросы с плавными переходами */
+@media (max-width: 900px) {
+    .calculator-grid {
+        grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr);
+    }
+    
+    .color-buttons {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 800px) {
     .calculator-grid {
         grid-template-columns: 1fr;
+        max-width: 600px;
+        margin: 0 auto;
     }
     
     .house-preview {
-        font-size: 60px;
+        order: -1;
+        margin: 0 auto;
+        max-width: 500px;
+        padding: clamp(10px, 2vw, 15px);
     }
-  }
+    
+    .input-section {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: clamp(5px, 2vw, 10px);
+    }
+    
+    .calculator-container {
+        width: 98%;
+        padding: clamp(8px, 2vw, 15px);
+    }
+    
+    h1 {
+        font-size: clamp(18px, 4vw, 24px);
+        margin: clamp(10px, 2vw, 20px) 0;
+    }
+    
+    .form-group {
+        margin-bottom: clamp(10px, 2vw, 15px);
+    }
+    
+    input[type="number"],
+    select,
+    button {
+        padding: clamp(6px, 1.5vw, 10px);
+        font-size: clamp(13px, 2vw, 16px);
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(8px, 1.5vw, 15px);
+    }
+    
+    .action-button {
+        width: clamp(180px, 60%, 250px);
+        padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.5vw, 25px);
+        font-size: clamp(12px, 1.2vw, 14px);
+    }
+    
+    .calculate-button {
+        width: clamp(180px, 60%, 250px);
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+    
+    .color-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .color-name {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .calculator-container {
+        width: 100%;
+        padding: clamp(8px, 2vw, 12px);
+        border-radius: clamp(2px, 1vw, 4px);
+    }
+    
+    .house-preview {
+        margin: 0 -8px;
+        padding: clamp(5px, 1.5vw, 10px);
+    }
+    
+    #house-icon,
+    canvas {
+        max-width: 100%;
+    }
+    
+    .color-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .color-button {
+        height: 35px;
+    }
+    
+    .calculate-button {
+        width: clamp(160px, 70%, 220px);
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .color-name {
+        font-size: 10px;
+    }
+    
+    .action-button {
+        width: clamp(160px, 70%, 220px);
+        padding: clamp(8px, 1vw, 10px) clamp(10px, 1.2vw, 20px);
+    }
+    
+    .back-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .back-button .back-icon {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+    body {
+        padding: 0;
+    }
+    
+    .calculator-container {
+        border-radius: 0;
+    }
+    
+    input[type="number"],
+    select {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+    }
+    
+    .action-button {
+        width: clamp(140px, 80%, 200px);
+        padding: 8px clamp(8px, 1vw, 15px);
+        font-size: 13px;
+    }
+    
+    .color-buttons {
+        gap: 8px;
+    }
+    
+    .color-button {
+        height: 35px;
+    }
+    
+    .color-name {
+        font-size: 10px;
+    }
+    
+    .calculate-button {
+        width: clamp(140px, 80%, 200px);
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .back-button-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .back-button {
+        padding: clamp(8px, 1.5vw, 10px) clamp(15px, 2vw, 20px);
+        font-size: clamp(14px, 1.5vw, 15px);
+    }
+}

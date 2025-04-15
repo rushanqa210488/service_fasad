@@ -118,9 +118,7 @@ ul {
 .menu-item {
   position: relative;
   padding: 0;
-  background-color: #2c77d4;
-  border-radius: 5px ;
-
+  border-radius: 5px;
 }
 
 .menu-btn {
@@ -137,15 +135,23 @@ ul {
 .menu-link {
   display: block;
   width: 100%;
-  background-color: #b37415;
+  background-color: #06b6e2;
   border: none;
-  border-radius: 5px ;
+  border-radius: 5px;
   cursor: pointer;
-  text-align: left;
-  padding: 10px 15px; /* Увеличиваем область для удобства */
+  text-align: center;
+  padding: 10px 15px;
   font-size: 16px;
-  position: relative; /* Для точного позиционирования */
-  z-index: 1; /* Поверх подменю */
+  position: relative;
+  z-index: 1;
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
+.menu-link:hover {
+  background-color: #0590b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .menu-link[aria-expanded="true"] {
