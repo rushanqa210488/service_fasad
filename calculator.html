@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор мокрого фасада</title>
+    <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Калькулятор мокрого фасада</h1>
+        
+        <div class="calculator-grid">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="area">Площадь фасада (м²):</label>
+                    <input type="number" id="area" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="material">Тип материала:</label>
+                    <select id="material">
+                        <option value="standard">Стандартный</option>
+                        <option value="premium">Премиум</option>
+                        <option value="luxury">Люкс</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Утепление:</label>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="insulation">
+                        <label for="insulation"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="plaster-type">Марка штукатурки:</label>
+                    <select id="plaster-type" class="form-control">
+                        <option value="ceresit">Ceresit</option>
+                        <option value="knauf">Knauf</option>
+                        <option value="weber">Weber</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="insulation-type">Тип утеплителя:</label>
+                    <select id="insulation-type" class="form-control">
+                      <option value="none">Без утепления</option>
+                      <option value="mineral">Минеральная вата</option>
+                      <option value="penoplast">Пенопласт</option>
+                      <option value="stone">Каменная вата</option>
+                      <option value="basalt">Базальтовая вата</option>
+                      <option value="extruded">Экструдированный пенопласт</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="insulation-thickness">Толщина утеплителя (мм):</label>
+                    <select id="insulation-thickness" class="form-control">
+                        <option value="30">30 мм</option>
+                        <option value="50">50 мм</option>
+                        <option value="100">100 мм</option>
+                    </select>
+                </div>
+
+                <div class="color-section">
+                    <label>Цвет фасада:</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="colorPicker" value="#835f47">
+                        <span class="selected-color-value">#835f47</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="house-preview">
+                <img id="house-icon" src="./assets/2025-01-20_10.31.10-removebg-preview (1).png">
+            </div>
+        </div>
+
+        <button id="calculate-btn" class="calculate-button">Рассчитать</button>
+
+        <div id="result" class="hidden">
+            <p>Общая стоимость: <span id="total-cost">0</span> руб.</p>
+            <p>Необходимое количество штукатурки: <span id="materials">0</span> кг</p>
+            <p>Стоимость утепления: <span id="insulation-cost">0</span> руб.</p>
+            <p>Стоимость штукатурки: <span id="plaster-cost">0</span> руб.</p>
+        </div>
+            <button id="download-btn" class="secondary-button">Скачать расчёт</button>
+            <button id="email-btn" class="secondary-button">Отправить на почту</button>
+        </div>
+    </div>
+    <script src="calculator.js"></script>
+</body>
+</html>
