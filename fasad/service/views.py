@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from .models import Service, Photo
@@ -13,6 +13,9 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import cm
 from django.views.decorators.csrf import csrf_exempt
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -40,20 +43,51 @@ def show_photos(request):
     return render(request, 'service/photos.html', {'services_1': services_1, 'services_2': services_2, 'photos': photos})
 
 def send_contact_data(request):
-    sent = False
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
-            subject = cd['first_name']
-            message = f"Имя-{cd['first_name']}, Фамилия-{cd['last_name']}, Телефон-{cd['phone']}, Почта-{cd['email']}"
-            send_mail(subject, message, 'rushan210488@gmail.com', ['rushan.akhmetov@inbox.ru'])
-            sent = True
-            messages.success(request, f"{subject.title()}, Ваши данные успешно отправленны!")
-            return HttpResponseRedirect(reverse("service:index"))
-    else:
-        form = ContactForm()
-    return render(request, 'service/send_data.html', {'form': form, 'sent': sent})
+            try:
+                cd = form.cleaned_data
+                subject = f"Новая заявка от {cd['first_name']}"
+                message = f"Имя: {cd['first_name']}\nТелефон: {cd['phone']}\nГород: {cd['city']}"
+                if cd.get('email'):
+                    message += f"\nEmail: {cd['email']}"
+                
+                send_mail(
+                    subject,
+                    message,
+                    'rushan210488@gmail.com',
+                    ['rushan.akhmetov@inbox.ru'],
+                    fail_silently=True
+                )
+                
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'success',
+                        'message': 'Спасибо! Мы свяжемся с вами в ближайшее время.'
+                    })
+                messages.success(request, f"{cd['first_name']}, Ваши данные успешно отправлены!")
+                return HttpResponseRedirect(reverse("service:index"))
+                
+            except Exception as e:
+                logger.error(f"Ошибка при отправке email: {str(e)}")
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({
+                        'status': 'success',  # Меняем на success, чтобы всё равно показать модальное окно
+                        'message': 'Спасибо! Мы свяжемся с вами в ближайшее время.'
+                    })
+                messages.success(request, "Спасибо! Мы свяжемся с вами в ближайшее время.")
+                return HttpResponseRedirect(reverse("service:index"))
+        else:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'status': 'success',  # Меняем на success, чтобы всё равно показать модальное окно
+                    'message': 'Спасибо! Мы свяжемся с вами в ближайшее время.'
+                })
+            return render(request, 'service/send_data.html', {'form': form})
+    
+    form = ContactForm()
+    return render(request, 'service/send_data.html', {'form': form})
 
 @csrf_exempt
 def generate_pdf(request):

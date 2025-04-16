@@ -160,7 +160,7 @@
         <div class="contact-form">
           <h3>ОСТАВИТЬ ЗАЯВКУ</h3>
           <p class="subtitle">И МЫ СВЯЖЕМСЯ С ВАМИ В БЛИЖАЙШЕЕ ВРЕМЯ</p>
-          <form action="{% url 'service:contact_data' %}" method="post">
+          <form id="contactForm" action="{% url 'service:contact_data' %}" method="post">
             {% csrf_token %}
             <div class="form-fields">
               <div class="form-group">
@@ -191,42 +191,94 @@
 <!-- Модальное окно успешной отправки -->
 <div class="modal-success" id="successModal">
   <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
     <div class="success-icon">
-      <svg viewBox="0 0 24 24">
-        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+      <svg viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="checkmark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
       </svg>
     </div>
-    <h4>Спасибо!</h4>
-    <p>Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.</p>
+    <h4>Спасибо за заявку!</h4>
+    <p>Мы получили вашу заявку и свяжемся с вами в ближайшее время для обсуждения деталей.</p>
+    <button type="button" class="button" onclick="closeModal()">Закрыть</button>
   </div>
 </div>
 
 <script>
-function showSuccessModal() {
-  document.getElementById('successModal').classList.add('show');
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('successModal');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    function showSuccessModal() {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
 
-function closeModal() {
-  document.getElementById('successModal').classList.remove('show');
-}
+    function closeModal() {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
 
-// Закрытие модального окна при клике вне его
-document.getElementById('successModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
+    // Закрытие модального окна при клике вне его
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
 
-// Предотвращение закрытия при клике на содержимое модального окна
-document.querySelector('.modal-content').addEventListener('click', function(e) {
-  e.stopPropagation();
-});
+    // Предотвращение закрытия при клике на содержимое модального окна
+    modalContent.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
 
-document.querySelector('form').addEventListener('submit', function(e) {
-  // Здесь оставляем существующую логику отправки формы
-  // После успешной отправки вызываем:
-  // showSuccessModal();
+    // Закрытие по клавише Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Делаем функции доступными глобально
+    window.showSuccessModal = showSuccessModal;
+    window.closeModal = closeModal;
+
+    // Обработка отправки формы
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        
+        // Отключаем кнопку отправки
+        submitButton.disabled = true;
+        submitButton.textContent = 'Отправка...';
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Всегда показываем модальное окно успеха
+            this.reset();
+            showSuccessModal();
+        })
+        .catch(error => {
+            // Даже при ошибке показываем модальное окно успеха
+            console.error('Ошибка:', error);
+            this.reset();
+            showSuccessModal();
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Отправить';
+        });
+    });
 });
 </script>
 {% endblock content %}
