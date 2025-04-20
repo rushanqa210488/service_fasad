@@ -48,8 +48,8 @@ def send_contact_data(request):
         if form.is_valid():
             try:
                 cd = form.cleaned_data
-                subject = f"Новая заявка от {cd['first_name']}"
-                message = f"Имя: {cd['first_name']}\nТелефон: {cd['phone']}\nГород: {cd['city']}"
+                subject = f"Новая заявка от {cd['first_name']} {cd['last_name']}"
+                message = f"Имя: {cd['first_name']}\nФамилия: {cd['last_name']}\nТелефон: {cd['phone']}"
                 if cd.get('email'):
                     message += f"\nEmail: {cd['email']}"
                 
